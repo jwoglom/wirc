@@ -1,0 +1,82 @@
+
+
+**Opened the process.
+
+::PRIVMSG #telneta a
+27585
+::11579
+::13585
+::7171
+::14444
+::a
+::a
+::PRIVMSG #telneta aa
+::PRIVMSG #telneta aa
+Trying 192.241.190.26...
+Connected to washington.bouncerstation.com.
+Escape character is '^]'.
+:irc.bouncerstation.com NOTICE Auth :*** Looking up your hostname...
+:irc.bouncerstation.com NOTICE Auth :*** Looking up your ident...
+:irc.bouncerstation.com NOTICE Auth :*** Found your hostname (pool-108-18-145-228.washdc.fios.verizon.net) -- cached
+
+
+**CONNECTED**
+
+:irc.bouncerstation.com NOTICE Auth :*** Ident request timed out.
+:irc.bouncerstation.com NOTICE Auth :*** Could not find your ident, using ~user_13939661 instead.
+:irc.bouncerstation.com NOTICE Auth :Welcome to BouncerStation!
+:irc.bouncerstation.com 001 user_1393966170934 :Welcome to the BouncerStation IRC Network user_1393966170934!~user_13939661@pool-108-18-145-228.washdc.fios.verizon.net
+:irc.bouncerstation.com 002 user_1393966170934 :Your host is irc.bouncerstation.com, running version InspIRCd-2.0
+:irc.bouncerstation.com 003 user_1393966170934 :This server was created 00:27:25 Feb 28 2014
+:irc.bouncerstation.com 004 user_1393966170934 irc.bouncerstation.com InspIRCd-2.0 BGIRSdhikorswx ACDGIKLMNOPQRSTabcefghiklmnopqrstv ILabefghkloqv
+:irc.bouncerstation.com 005 user_1393966170934 AWAYLEN=201 CASEMAPPING=rfc1459 CHANMODES=Ibeg,k,Lfl,ACDGKMNOPQRSTcimnprst CHANNELLEN=65 CHANTYPES=# CHARSET=ascii ELIST=MU EXCEPTS=e EXTBAN=,ACNOQRSTUc FNC INVEX=I KICKLEN=256 MAP :are supported by this server
+:irc.bouncerstation.com 005 user_1393966170934 MAXBANS=60 MAXCHANNELS=20 MAXPARA=32 MAXTARGETS=20 MODES=20 NETWORK=BouncerStation NICKLEN=32 OVERRIDE PREFIX=(qaohv)~&@%+ STATUSMSG=~&@%+ TOPICLEN=308 VBANLIST WALLCHOPS :are supported by this server
+:irc.bouncerstation.com 005 user_1393966170934 WALLVOICES :are supported by this server
+:irc.bouncerstation.com 042 user_1393966170934 447AAAAGY :your unique ID
+:irc.bouncerstation.com 375 user_1393966170934 :irc.bouncerstation.com message of the day
+:irc.bouncerstation.com 372 user_1393966170934 :- Welcome to Bouncer Station ZNC IRC!
+:irc.bouncerstation.com 376 user_1393966170934 :End of message of the day.
+:irc.bouncerstation.com 251 user_1393966170934 :There are 4 users and 19 invisible on 2 servers
+:irc.bouncerstation.com 252 user_1393966170934 14 :operator(s) online
+:irc.bouncerstation.com 254 user_1393966170934 10 :channels formed
+:irc.bouncerstation.com 255 user_1393966170934 :I have 14 clients and 1 servers
+:irc.bouncerstation.com 265 user_1393966170934 :Current Local Users: 14  Max: 16
+:irc.bouncerstation.com 266 user_1393966170934 :Current Global Users: 23  Max: 25
+:irc.bouncerstation.com 396 user_1393966170934 BouncerStation-on1j28.fios.verizon.net :is now your displayed host
+:user_1393966170934!~user_13939661@BouncerStation-on1j28.fios.verizon.net MODE user_1393966170934 +ix
+:user_1393966170934!~user_13939661@BouncerStation-on1j28.fios.verizon.net JOIN :#help
+:irc.bouncerstation.com 332 user_1393966170934 #help :Bouncer Station IRC || http://bouncerstation.com || To request a ZNC: /msg Rubberbot !request username email@domain.com  ||  Want a "bouncerstation/user/yournick" cloak? Register with nickserv and ask a staff member. | Please use pastebin for things longer than ~3 lines.
+:irc.bouncerstation.com 333 user_1393966170934 #help fwilson 1393867258
+:irc.bouncerstation.com 353 user_1393966170934 = #help :MrEggsalad ~ChanServ &moxy marrub &r00t user_1393966170934 &ahamilto s @Rubberbot &fwilson &sdamashek mrtux Sunborn +james 
+:irc.bouncerstation.com 366 user_1393966170934 #help :End of /NAMES list.
+:NickServ!NickServ@services. NOTICE user_1393966170934 :Welcome to BouncerStation, user_1393966170934! Here on BouncerStation, we provide services to enable the registration of nicknames and channels! For details, type /msg NickServ help and /msg ChanServ help.
+:ChanServ!ChanServ@services. NOTICE user_1393966170934 :[#help] Welcome to Bouncer Station support channel! Users with "&" in front of their names denotes staff. To request a free ZNC simply type "/msg Rubberbot !request username email@domain.com" without quotes.
+:user_1393966170934!~user_13939661@BouncerStation-on1j28.fios.verizon.net JOIN :#telneta
+:irc.bouncerstation.com 353 user_1393966170934 = #telneta :user_1393966170934 s @james 
+:irc.bouncerstation.com 366 user_1393966170934 #telneta :End of /NAMES list.
+
+Joined.ouncerstation.com 005 user_1393966170934 MAXBANS=60 MAXCHANNELS=20 MAXPARA=32 MAXTARGETS=20 MODES=20 NETWORK=BouncerStation NICKLEN=32 OVERRIDE PREFIX=(qaohv)~&@%+ STATUSMSG=~&@%+ TOPICLEN=308 VBANLIST WALLCHOPS :are supported by this server
+:irc.bouncerstation.com 005 user_1393966170934 WALLVOICES :are supported by this server
+:irc.bouncerstation.com 042 user_1393966170934 447AAAAGY :your unique ID
+:irc.bouncerstation.com 375 user_1393966170934 :irc.bouncerstation.com message of the day
+:irc.bouncerstation.com 372 user_1393966170934 :- Welcome to Bouncer Station ZNC IRC!
+:irc.bouncerstation.com 376 user_1393966170934 :End of message of the day.
+:irc.bouncerstation.com 251 user_1393966170934 :There are 4 users and 19 invisible on 2 servers
+:irc.bouncerstation.com 252 user_1393966170934 14 :operator(s) online
+:irc.bouncerstation.com 254 user_1393966170934 10 :channels formed
+:irc.bouncerstation.com 255 user_1393966170934 :I have 14 clients and 1 servers
+:irc.bouncerstation.com 265 user_1393966170934 :Current Local Users: 14  Max: 16
+:irc.bouncerstation.com 266 user_1393966170934 :Current Global Users: 23  Max: 25
+:irc.bouncerstation.com 396 user_1393966170934 BouncerStation-on1j28.fios.verizon.net :is now your displayed host
+:user_1393966170934!~user_13939661@BouncerStation-on1j28.fios.verizon.net MODE user_1393966170934 +ix
+:user_1393966170934!~user_13939661@BouncerStation-on1j28.fios.verizon.net JOIN :#help
+:irc.bouncerstation.com 332 user_1393966170934 #help :Bouncer Station IRC || http://bouncerstation.com || To request a ZNC: /msg Rubberbot !request username email@domain.com  ||  Want a "bouncerstation/user/yournick" cloak? Register with nickserv and ask a staff member. | Please use pastebin for things longer than ~3 lines.
+:irc.bouncerstation.com 333 user_1393966170934 #help fwilson 1393867258
+:irc.bouncerstation.com 353 user_1393966170934 = #help :MrEggsalad ~ChanServ &moxy marrub &r00t user_1393966170934 &ahamilto s @Rubberbot &fwilson &sdamashek mrtux Sunborn +james 
+:irc.bouncerstation.com 366 user_1393966170934 #help :End of /NAMES list.
+:NickServ!NickServ@services. NOTICE user_1393966170934 :Welcome to BouncerStation, user_1393966170934! Here on BouncerStation, we provide services to enable the registration of nicknames and channels! For details, type /msg NickServ help and /msg ChanServ help.
+:ChanServ!ChanServ@services. NOTICE user_1393966170934 :[#help] Welcome to Bouncer Station support channel! Users with "&" in front of their names denotes staff. To request a free ZNC simply type "/msg Rubberbot !request username email@domain.com" without quotes.
+:user_1393966170934!~user_13939661@BouncerStation-on1j28.fios.verizon.net JOIN :#telneta
+:irc.bouncerstation.com 353 user_1393966170934 = #telneta :user_1393966170934 s @james 
+:irc.bouncerstation.com 366 user_1393966170934 #telneta :End of /NAMES list.
+

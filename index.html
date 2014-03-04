@@ -4,11 +4,105 @@
     <title>Wirc</title>
 </head>
 <link rel="stylesheet" type="text/css" href="core.css" />
+<style>
+h1 {
+    font-size: 32px;
+}
+.channel, .welcome {
+    display: none;
+}
+</style>
+<script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">
+$(document).ready(function() {
+    var state = 0;
+    var userid = +new Date();
+    var socket;
+    init = function() {
+        var host = "ws://127.0.0.1:9002/ircServer";
+        try {
+            socket = new WebSocket(host);
+            console.log("state: "+socket.readyState);
+            socket.onopen = function(msg) {
+                console.log("Open: "+this.readyState);
+                connectdialog();
+            }
+            socket.onmessage = function(msg) {
+                console.log("Message: "+msg.data);
+                pmsg(msg);
+            }
+            socket.onclose = function(msg) {
+                console.log("Closed: "+this.readyState);
+            }
+        } catch(err) {
+            console.log(err);
+        }
+    }
 
+    send = function(msg) {
+        try {
+            socket.send(userid+"@"+msg);
+            console.log("Sent: "+msg);
+        } catch(err) { console.log(err); }
+    }
+
+    quit = function() {
+        if(socket != null) {
+            socket.close();
+            socket = null;
+        }
+    }
+    connectdialog = function() {
+        $(".welcome").show();
+        $("#nick").val("user_"+userid);
+    }
+    pmsg = function(msg) {
+        if(state == "connect") {
+            connectd();
+        } else if(state == "connected") {
+            $("#messages").append("\n"+msg);
+        }
+    }
+    connectsmt = function() {
+        var j = {
+            server: $("#server").val(),
+            port: $("#port").val(),
+            nick: $("#nick").val(),
+            realname: $("#realname").val(),
+            chan: $("#chan").val()
+        }
+        state = "connect";
+        send("conn:"+JSON.stringify(j));
+    }
+    connectd = function() {
+        state = "connected";
+        $(".welcome").hide();
+        $(".channel").show();
+
+    }
+    init();
+});
 
 </script>
 <body>
-
+<div class="welcome">
+<h1>Welcome to Wirc</h1>
+Server: <input id="server" value="irc.bouncerstation.com" /><br />
+Port: <input id="port" value=6667 /><br />
+Nick: <input id="nick" value="user" /><br />
+Realname: <input id="realname" value="AngelaWilliam" /><br />
+Channel: <input id="chan" value="#telneta" /><br />
+<button onclick="connectsmt()">Connect</button>
+</div>
+<div class="channel" style="padding: 30px">
+    <table>
+    <tr><td>
+        <textarea id="messages" style="width: 500px;height: 500px"></textarea>
+    </td></tr>
+    <tr><td>
+        <input id="text" style="width: 450px" />
+        <button onclick="sendmsg()" style="width: 50px;padding:5px">Send</button>
+    </td></tr></table>
+</div>
 </body>
 </html>

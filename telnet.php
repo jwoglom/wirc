@@ -1,10 +1,18 @@
 <?php
+$opts = array(
+    "server" => $argv[1],
+    "port" => $argv[2],
+    "nick" => $argv[3],
+    "realname" => $argv[4],
+    "chan" => $argv[5]
+);
+
 $ds = array(
     0 => array("pipe", "r"),
     1 => array("pipe", "w"),
     2 => array("file", "/tmp/error.txt", "a")
 );
-$process = proc_open('tail -f ./input&telnet irc.bouncerstation.com 6667', $ds, $pipes, $cwd, $env);
+$process = proc_open('tail -f ./input&telnet '.$opts['server'].' '.$opts['port'], $ds, $pipes, $cwd, $env);
 if(is_resource($process)) {
     echo "\n\n**Opened the process.\n\n";
     $readBuf = [];
@@ -35,11 +43,11 @@ if(is_resource($process)) {
         if(strpos($cbuf, "Found your hostname") !== false && !$connected) {
             $connected = true;
             echo "\n\n**CONNECTED**\n\n";
-            fwrite($pipes[0], "NICK telnet_test".time()."\n");
-            fwrite($pipes[0], "USER telnet_test".time()." 8 * :RealName\n");
+            fwrite($pipes[0], "NICK ".$opts['nick']."\n");
+            fwrite($pipes[0], "USER ".$opts['nick']." 8 * :".$opts['realname']."\n");
         }
         else if($connected && !$joined) {
-            fwrite($pipes[0], "JOIN #telneta\n");
+            fwrite($pipes[0], "JOIN ".$opts['chan']."\n");
             $joined = true;
         } else if($joined) {
             // whee it's joined
