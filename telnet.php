@@ -1,18 +1,20 @@
 <?php
+$path = "/Users/james/Sites/wirc/";
 $opts = array(
     "server" => $argv[1],
     "port" => $argv[2],
     "nick" => $argv[3],
     "realname" => $argv[4],
-    "chan" => $argv[5]
+    "chan" => $argv[5],
+    "uid" => $argv[6]
 );
-
+print_r($opts);
 $ds = array(
     0 => array("pipe", "r"),
     1 => array("pipe", "w"),
-    2 => array("file", "/tmp/error.txt", "a")
+    2 => array("file", $path."tmp/error.txt", "a")
 );
-$process = proc_open('tail -f ./input&telnet '.$opts['server'].' '.$opts['port'], $ds, $pipes, $cwd, $env);
+$process = proc_open('tail -f '.$path.'/tmp/input'.$opts['uid'].'&telnet '.$opts['server'].' '.$opts['port'], $ds, $pipes, $cwd, $env);
 if(is_resource($process)) {
     echo "\n\n**Opened the process.\n\n";
     $readBuf = [];
@@ -42,7 +44,8 @@ if(is_resource($process)) {
         }
         if(strpos($cbuf, "Found your hostname") !== false && !$connected) {
             $connected = true;
-            echo "\n\n**CONNECTED**\n\n";
+            //echo "\n\n**CONNECTED**\n\n";
+            echo "\nLogging you in..\n";
             fwrite($pipes[0], "NICK ".$opts['nick']."\n");
             fwrite($pipes[0], "USER ".$opts['nick']." 8 * :".$opts['realname']."\n");
         }
@@ -51,8 +54,8 @@ if(is_resource($process)) {
             $joined = true;
         } else if($joined) {
             // whee it's joined
-            echo "\nJoined.";
-            echo $cbuf."\n";
+            //echo "\nJoined.";
+            //echo $cbuf."\n";
             if(substr($cbuf, 0, 2) == "::") {
                 $c = substr($cbuf, 2);
                 echo "RUNNING: ".$c;

@@ -1,50 +1,22 @@
 <?php
-require_once 'websockets.php';
-class ircServer extends WebSocketServer {
-    protected function process($user, $message) {
-        echo $message;
-        list($uid, $msg) = explode("@", $message, 2);
-        echo "\nMessage from $uid: $msg";
-        if(substr($msg, 0, 5) == "conn:") {
-            $m = substr($msg, 5);
-            $j = json_decode($m);
-            echo "Connecting:\n";
-            print_r($j);
-            self::ircc($uid, $j);
-        }
-        if(substr($msg, 0, 5) == "ping:") {
-            $this->send($user, ircp($uid));
-        }
-    }
-    protected $conns = [];
-    function ircc($uid, $j) {
-        $arg = escapeshellcmd($j->server)." ".escapeshellcmd($j->port)." ".escapeshellcmd($j->nick)." ".escapeshellcmd($j->realname)." ".escapeshellcmd($j->chan);
-        echo "php ./telnet.php ".$arg.">./tmp".$uid." &";
-        system("php ./telnet.php ".$arg.">./tmp".$uid." &");
-        $conns[$uid] = 0;
-        
-    }
-    function ircp($uid) {
-        $f = file_get_contents("./tmp".$uid);
-        $f = substr($f, $conns[$uid]);
-        $conns[$uid] = sizeof($f);
-        echo $f;
-        return $f;
+$m = $_POST["m"];
 
-    }
-    protected function connected($user) {
-
-    }
-
-    protected function closed($user) {
-
-    }
+if($m =="conn") {
+    $uid = time();
+    echo $uid;
+    $arg = escapeshellcmd($_POST['server'])." ".escapeshellcmd($_POST['port'])." ".escapeshellcmd($_POST['nick'])." ".escapeshellcmd($_POST['realname'])." ".escapeshellcmd($_POST['chan'])." ".$uid;
+    touch("./tmp/tmp".$uid);
+    touch("./tmp/input".$uid);
+    $cmd = "php ./telnet.php ".$arg." >./tmp/tmp".$uid." &";
+    $exc = shell_exec($cmd);
+    echo $exc;
+    die();
+} else if($m == "ping") {
+    $fc = file_get_contents("./tmp/tmp".$_POST['uid']);
+    $s = substr($fc, $_POST['last']);
+    die($s);
+} else if($m == "send") {
+    file_put_contents("./tmp/input".$_POST['uid'], "::".$_POST['msg']."\n\n");
 }
 
-$irc = new ircServer("0.0.0.0", "9002");
-try {
-    $irc->run();
-} catch(Exception $e) {
-    $irc->stdout($e->getMessage());
-}
 ?>
