@@ -12,11 +12,29 @@ if($m =="conn") {
     echo $exc;
     die();
 } else if($m == "ping") {
-    $fc = file_get_contents("./tmp/tmp".$_POST['uid']);
-    $s = substr($fc, $_POST['last']);
-    die($s);
+    ping($_POST['uid'], $_POST['last']);
 } else if($m == "send") {
-    file_put_contents("./tmp/input".$_POST['uid'], "::".$_POST['msg']."\n\n");
+    send($_POST['uid'], $_POST['msg']);
+    clearold();
+}
+function ping($uid, $last) {
+    file_put_contents("./tmp/ping_".$uid, time());
+    $fc = file_get_contents("./tmp/tmp".$uid);
+    $s = substr($fc, $last);
+    die($s);
+}
+function send($uid, $msg) {
+    file_put_contents("./tmp/input".$uid, "::".$msg."\n\n");
+}
+function clearold() {
+    $o = shell_exec("ls ./tmp|grep ping_|sed 's/ping_//g'");
+    $l = explode("\n", $o);
+    foreach($l as $id) {
+        $f = file_get_contents("./tmp/ping_".$id);
+        if(time() - $f > 60000) {
+            send($id, "QUIT");
+        }
+    }
 }
 
 ?>

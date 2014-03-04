@@ -18,6 +18,7 @@ $(document).ready(function() {
     uid = null;
     last = 0;
     channel = null;
+    rawmsg = "";mynick = "";
     init = function() {
         $(".welcome").show();
         $("#nick").val("wirc_"+(Math.floor(Math.random()*1000)));
@@ -32,9 +33,10 @@ $(document).ready(function() {
             chan: $("#chan").val()
         }
         $.post("req.php", j, function(d) {
-            console.log(d);
+            //console.log(d);
             uid = d;
             channel = j['chan'];
+            mynick = j['nick'];
             setup();
             ping();
         });
@@ -47,27 +49,74 @@ $(document).ready(function() {
     setup = function() {
         $(".welcome").hide();
         $(".channel").show();
-        setInterval(ping, 500);
+        setInterval(ping, 10000);
+        nl(" * ", "One moment please...");
     }
 
     ping = function() {
         $.post("req.php", {m: "ping", "uid": uid, last: last}, function(d) {
-            console.log(d);
+            //console.log(d);
             last += d.length;
             upd(d);
 
         });
     }
+    safe = function(t) { return t.replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
     upd = function(c) {
-        $("#messages").append(c);
-        var c = $('#messages');
-        c.scrollTop(
-            c[0].scrollHeight - c.height()
+        $("#messages").append(safe(c));
+        rawmsg += c;
+
+        parseraw(c);
+        var ch = $('#messages');
+        ch.scrollTop(
+            ch[0].scrollHeight - ch.height()
         );
     }
-    sendmsg = function() {
-        send("PRIVMSG "+channel+" "+($("#text").val()));
+    parseraw = function(r) {
+        s = r.split('\n');
+        for(var i=0; i<s.length; i++) {
+            t = s[i].split(' ');
+            t[0] = t[0].substring(1);
+
+            console.log(t);
+            if(t[1] == 'JOIN') {
+                nl("<i>"+t[2].substring(1)+"</i>", t[0]+" has joined.");
+            } else if(t[1] == 'PART') {
+                nl("<i>"+t[2].substring(1)+"</i>", t[0]+" has parted.");
+            } else if(t[3] == '=') {
+                str = '';
+                for(var j=5; j<t.length; j++) {
+                    str+=t[j]+' ';
+                }
+                nl("<i>"+t[, "Users: "+str.substring(1));
+            } else if(t[1] == 'PRIVMSG' && t[0] != 'UNNING:') {
+                nl(t[0].split('!')[0], safe(s[i].split(':',3)[2]));
+            }
+
+        }
     }
+    nl = function(u, t) {
+        var h = "<tr><th>"+u+"</th><td>"+t+"</td></tr>";
+        $("#marea").append(h);
+    }
+    sendmsg = function() {
+        var v = $("#text").val();
+        if(v.substring(0, 1) == '/') {
+            if(v.substring(0,6) == '/nick ') {
+                send("NICK "+v.substring(6));
+            } else alert("Unsupported operation.");
+        } else {
+            send("PRIVMSG "+channel+" "+v);
+            nl(mynick, v);
+            $("#text").val("");
+        }
+    }
+
+    $("#text").keyup(function(e) {
+        if(e.keyCode == 13) {
+            sendmsg();  
+        }
+    });
     init();
 });
 
@@ -79,13 +128,16 @@ Server: <input id="server" value="irc.bouncerstation.com" /><br />
 Port: <input id="port" value=6667 /><br />
 Nick: <input id="nick" value="wirc" /><br />
 Realname: <input id="realname" value="AngelaWilliam" /><br />
-Channel: <input id="chan" value="#telneta" /><br />
+Channel: <input id="chan" value="#private" /><br />
 <button onclick="connectsmt()">Connect</button>
 </div>
 <div class="channel" style="padding: 30px">
     <table>
     <tr><td>
-        <textarea id="messages" style="width: 500px;height: 500px"></textarea>
+        <button onclick="$('#messages').toggle()">Show raw data</button><br />
+        <textarea id="messages" style="width: 500px;height: 500px;display: none"></textarea>
+        <table id="marea">
+        </table>
     </td></tr>
     <tr><td>
         <input id="text" style="width: 450px" />

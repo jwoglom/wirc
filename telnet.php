@@ -58,8 +58,11 @@ if(is_resource($process)) {
             //echo $cbuf."\n";
             if(substr($cbuf, 0, 2) == "::") {
                 $c = substr($cbuf, 2);
-                echo "RUNNING: ".$c;
+                //echo "RUNNING: ".$c;
                 fwrite($pipes[0], $c."\n");
+                if($c == "QUIT") {
+                    die();
+                }
             }
             //fwrite($pipes[0], "PRIVMSG #telneta ".time()."\n");
         }
