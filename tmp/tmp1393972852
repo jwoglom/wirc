@@ -1,0 +1,89 @@
+Array
+(
+    [server] => irc.bouncerstation.com
+    [port] => 6667
+    [nick] => wirc_369
+    [realname] => AngelaWilliam
+    [chan] => #private
+    [uid] => 1393972852
+)
+
+
+**Opened the process.
+
+Trying 192.241.190.26...
+Connected to washington.bouncerstation.com.
+Escape character is '^]'.
+:irc.bouncerstation.com NOTICE Auth :*** Looking up your hostname...
+:irc.bouncerstation.com NOTICE Auth :*** Looking up your ident...
+:irc.bouncerstation.com NOTICE Auth :*** Found your hostname (pool-108-18-145-228.washdc.fios.verizon.net) -- cached
+
+Logging you in..
+:irc.bouncerstation.com NOTICE Auth :*** Ident request timed out.
+:irc.bouncerstation.com NOTICE Auth :*** Could not find your ident, using ~wirc_369 instead.
+:irc.bouncerstation.com NOTICE Auth :Welcome to BouncerStation!
+:irc.bouncerstation.com 001 wirc_369 :Welcome to the BouncerStation IRC Network wirc_369!~wirc_369@pool-108-18-145-228.washdc.fios.verizon.net
+:irc.bouncerstation.com 002 wirc_369 :Your host is irc.bouncerstation.com, running version InspIRCd-2.0
+:irc.bouncerstation.com 003 wirc_369 :This server was created 00:27:25 Feb 28 2014
+:irc.bouncerstation.com 004 wirc_369 irc.bouncerstation.com InspIRCd-2.0 BGIRSdhikorswx ACDGIKLMNOPQRSTabcefghiklmnopqrstv ILabefghkloqv
+:irc.bouncerstation.com 005 wirc_369 AWAYLEN=201 CASEMAPPING=rfc1459 CHANMODES=Ibeg,k,Lfl,ACDGKMNOPQRSTcimnprst CHANNELLEN=65 CHANTYPES=# CHARSET=ascii ELIST=MU EXCEPTS=e EXTBAN=,ACNOQRSTUc FNC INVEX=I KICKLEN=256 MAP :are supported by this server
+:irc.bouncerstation.com 005 wirc_369 MAXBANS=60 MAXCHANNELS=20 MAXPARA=32 MAXTARGETS=20 MODES=20 NETWORK=BouncerStation NICKLEN=32 OVERRIDE PREFIX=(qaohv)~&@%+ STATUSMSG=~&@%+ TOPICLEN=308 VBANLIST WALLCHOPS :are supported by this server
+:irc.bouncerstation.com 005 wirc_369 WALLVOICES :are supported by this server
+:irc.bouncerstation.com 042 wirc_369 447AAAAI4 :your unique ID
+:irc.bouncerstation.com 375 wirc_369 :irc.bouncerstation.com message of the day
+:irc.bouncerstation.com 372 wirc_369 :- Welcome to Bouncer Station ZNC IRC!
+:irc.bouncerstation.com 376 wirc_369 :End of message of the day.
+:irc.bouncerstation.com 251 wirc_369 :There are 4 users and 34 invisible on 2 servers
+:irc.bouncerstation.com 252 wirc_369 14 :operator(s) online
+:irc.bouncerstation.com 254 wirc_369 11 :channels formed
+:irc.bouncerstation.com 255 wirc_369 :I have 29 clients and 1 servers
+:irc.bouncerstation.com 265 wirc_369 :Current Local Users: 29  Max: 33
+:irc.bouncerstation.com 266 wirc_369 :Current Global Users: 38  Max: 42
+:irc.bouncerstation.com 396 wirc_369 BouncerStation-on1j28.fios.verizon.net :is now your displayed host
+:wirc_369!~wirc_369@BouncerStation-on1j28.fios.verizon.net MODE wirc_369 +ix
+:wirc_369!~wirc_369@BouncerStation-on1j28.fios.verizon.net JOIN :#help
+:irc.bouncerstation.com 332 wirc_369 #help :Bouncer Station IRC || http://bouncerstation.com || To request a ZNC: /msg Rubberbot !request username email@domain.com  ||  Want a "bouncerstation/user/yournick" cloak? Register with nickserv and ask a staff member. | Please use pastebin for things longer than ~3 lines.
+:irc.bouncerstation.com 333 wirc_369 #help fwilson 1393867258
+:irc.bouncerstation.com 353 wirc_369 = #help :MrEggsalad ~ChanServ &moxy marrub &r00t &ahamilto s @Rubberbot &fwilson &sdamashek mrtux Sunborn +james wirc_369 
+:irc.bouncerstation.com 366 wirc_369 #help :End of /NAMES list.
+:NickServ!NickServ@services. NOTICE wirc_369 :Welcome to BouncerStation, wirc_369! Here on BouncerStation, we provide services to enable the registration of nicknames and channels! For details, type /msg NickServ help and /msg ChanServ help.
+:ChanServ!ChanServ@services. NOTICE wirc_369 :[#help] Welcome to Bouncer Station support channel! Users with "&" in front of their names denotes staff. To request a free ZNC simply type "/msg Rubberbot !request username email@domain.com" without quotes.
+:wirc_369!~wirc_369@BouncerStation-on1j28.fios.verizon.net JOIN :#private
+:irc.bouncerstation.com 353 wirc_369 = #private :wirc_195 wirc_132 wirc_697 wirc_656 wirc_716 wirc_184 wirc_257 wirc_693 james wirc_350 newest wirc_369 newname james|wirc wirc_453 wirc_541 
+:irc.bouncerstation.com 366 wirc_369 #private :End of /NAMES list.
+::PRIVMSG #private a
+
+:newest!~wirc_522@BouncerStation-on1j28.fios.verizon.net QUIT :Client exited
+:wirc_697!~wirc_697@BouncerStation-on1j28.fios.verizon.net QUIT :Client exited
+:wirc_656!~wirc_656@BouncerStation-on1j28.fios.verizon.net QUIT :Client exited
+::PRIVMSG #private b
+
+::PRIVMSG #private c
+
+::PRIVMSG #private d
+
+::PRIVMSG #private f
+
+::PRIVMSG #private g
+
+::PRIVMSG #private a
+
+::PRIVMSG #private s
+
+
+::PRIVMSG #private s
+
+::PRIVMSG #private s
+
+::PRIVMSG #private s
+
+::PRIVMSG #private s
+
+:wirc_132!~wirc_132@BouncerStation-on1j28.fios.verizon.net QUIT :Client exited
+:wirc_453!~wirc_453@BouncerStation-on1j28.fios.verizon.net QUIT :Client exited
+:wirc_541!~wirc_541@BouncerStation-on1j28.fios.verizon.net QUIT :Client exited
+:james!~jwoglom@bouncerstation/supporter/james PRIVMSG #private :a
+:wirc_422!~wirc_422@BouncerStation-on1j28.fios.verizon.net JOIN :#private
+PING :irc.bouncerstation.com
+
+Ping request: PING :irc.bouncerstation.com

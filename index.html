@@ -1,7 +1,7 @@
 <!doctype html>
 <html>
 <head>
-    <title>Wirc</title>
+    <title>Wirc - the web IRC client</title>
 </head>
 <link rel="stylesheet" type="text/css" href="core.css" />
 <style>
@@ -11,10 +11,49 @@ h1 {
 .channel, .welcome {
     display: none;
 }
+h2#chantitle {
+    position: absolute;
+    top: 0px;
+    left: 100px;
+    font-size: 35px;
+    font-weight: normal;
+    margin-top: 0px;
+}
+h1#title {
+    position: absolute;
+    top: 0;
+    left: 5px;
+    display: none;
+    margin-top: 15px;
+    padding: 0;
+}
+.channel {
+    padding: 30px;
+    width: 80%;
+}
+.users {
+    position: absolute;
+    top: 100px;
+    left: 80%;
+    width: 20%;
+    overflow-y: scroll;
+}
+.users span {
+    display: block;
+}
+em.mention {
+    color: red;
+    font-style: normal;
+}
+#marea-wrap {
+    height: 500px;
+    overflow: scroll;
+}
 </style>
 <script type="text/javascript" src="http://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">
 $(document).ready(function() {
+    PING_INTERVAL = 500;
     uid = null;
     last = 0;
     channel = null;
@@ -49,7 +88,9 @@ $(document).ready(function() {
     setup = function() {
         $(".welcome").hide();
         $(".channel").show();
-        setInterval(ping, 10000);
+        $('#chantitle').html(channel);
+        $('h1#title').show();
+        setInterval(ping, PING_INTERVAL);
         nl(" * ", "One moment please...");
     }
 
@@ -81,14 +122,26 @@ $(document).ready(function() {
             console.log(t);
             if(t[1] == 'JOIN') {
                 nl("<i>"+t[2].substring(1)+"</i>", t[0]+" has joined.");
+                updusers("JOIN", t[0]);
             } else if(t[1] == 'PART') {
                 nl("<i>"+t[2].substring(1)+"</i>", t[0]+" has parted.");
+                updusers("PART", t[0]);
+            } else if(t[1] == 'QUIT') {
+                nl("<i>"+t[2].substring(1)+"</i>", t[0]+" has quit.");
+                updusers("PART", t[0]);
             } else if(t[3] == '=') {
                 str = '';
                 for(var j=5; j<t.length; j++) {
                     str+=t[j]+' ';
+                    if(t[4] == channel) updusers("JOIN", t[j]);
                 }
-                nl("<i>"+t[, "Users: "+str.substring(1));
+                nl("<i>"+t[4]+"</i>", "Users: "+str.substring(1));
+            } else if(t[1] == 'NICK') {
+                old = t[0].split('!')[0];
+                if(old == mynick) {
+                    mynick = t[2];
+                }
+                nl(old, "<b>is now known as: "+t[2]+"</b>");
             } else if(t[1] == 'PRIVMSG' && t[0] != 'UNNING:') {
                 nl(t[0].split('!')[0], safe(s[i].split(':',3)[2]));
             }
@@ -96,8 +149,25 @@ $(document).ready(function() {
         }
     }
     nl = function(u, t) {
-        var h = "<tr><th>"+u+"</th><td>"+t+"</td></tr>";
+        d = new Date();
+        tm = d.getHours()+":"+(d.getMinutes()+1)+":"+(d.getSeconds()+1);
+        t = t.replace(new RegExp(mynick, 'g'), "<em class='mention'>"+mynick+"</em>");
+        var h = "<tr><td class='tm'>"+tm+"</td><th>"+u+"</th><td>"+t+"</td></tr>";
         $("#marea").append(h);
+
+        var ch = $('#marea-wrap');
+        ch.scrollTop(
+            ch[0].scrollHeight - ch.height()
+        );
+    }
+    updusers = function(jp, usr) {
+        if(jp == 'JOIN') {
+            $(".users").append("<span name='"+usr+"'>"+(usr.split('!')[0])+"</span>");
+        } else if(jp == 'PART') {
+            $(".users[name='"+usr+"']").remove();
+        } else {
+            $(".users[name='"+jp+"']").attr("name", usr).html(usr.split('!')[0]);
+        }
     }
     sendmsg = function() {
         var v = $("#text").val();
@@ -108,8 +178,9 @@ $(document).ready(function() {
         } else {
             send("PRIVMSG "+channel+" "+v);
             nl(mynick, v);
-            $("#text").val("");
         }
+
+        $("#text").val("");
     }
 
     $("#text").keyup(function(e) {
@@ -131,18 +202,25 @@ Realname: <input id="realname" value="AngelaWilliam" /><br />
 Channel: <input id="chan" value="#private" /><br />
 <button onclick="connectsmt()">Connect</button>
 </div>
-<div class="channel" style="padding: 30px">
+<h1 id="title">Wirc</h1>
+<h2 id="chantitle"></h2>
+<div class="channel" style="">
     <table>
     <tr><td>
         <button onclick="$('#messages').toggle()">Show raw data</button><br />
         <textarea id="messages" style="width: 500px;height: 500px;display: none"></textarea>
-        <table id="marea">
-        </table>
+        <div id="marea-wrap">
+            <table id="marea">
+            </table>
+        </div>
     </td></tr>
     <tr><td>
         <input id="text" style="width: 450px" />
         <button onclick="sendmsg()" style="width: 50px;padding:5px">Send</button>
     </td></tr></table>
+</div>
+<div class="users">
+
 </div>
 </body>
 </html>

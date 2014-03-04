@@ -16,7 +16,7 @@ if($m =="conn") {
 } else if($m == "send") {
     send($_POST['uid'], $_POST['msg']);
     clearold();
-}
+} else if(isset($_GET['clear'])) clearold();
 function ping($uid, $last) {
     file_put_contents("./tmp/ping_".$uid, time());
     $fc = file_get_contents("./tmp/tmp".$uid);
@@ -30,9 +30,15 @@ function clearold() {
     $o = shell_exec("ls ./tmp|grep ping_|sed 's/ping_//g'");
     $l = explode("\n", $o);
     foreach($l as $id) {
-        $f = file_get_contents("./tmp/ping_".$id);
-        if(time() - $f > 60000) {
-            send($id, "QUIT");
+        if(file_exists("./tmp/ping_".$id)) {
+            $f = file_get_contents("./tmp/ping_".$id);
+            //echo $id." ".(time() - $f)." \n";
+            if(time() - $f > 60) {
+                send($id, "QUIT");
+                shell_exec("rm ./tmp/ping_".$id);
+                shell_exec("rm ./tmp/input".$id);
+                shell_exec("rm ./tmp/tmp".$id);
+            }
         }
     }
 }
