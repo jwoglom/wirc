@@ -4,7 +4,7 @@ $m = $_POST["m"];
 if($m =="conn") {
     $uid = time();
     echo $uid;
-    $arg = escapeshellcmd($_POST['server'])." ".escapeshellcmd($_POST['port'])." ".escapeshellcmd($_POST['nick'])." ".escapeshellcmd($_POST['realname'])." ".escapeshellcmd($_POST['chan'])." ".$uid;
+    $arg = escapeshellarg($_POST['server'])." ".escapeshellarg($_POST['port'])." ".escapeshellarg($_POST['nick'])." ".escapeshellarg($_POST['realname'])." ".escapeshellarg($_POST['chan'])." ".$uid;
     touch("./tmp/tmp".$uid);
     touch("./tmp/input".$uid);
     $cmd = "php ./telnet.php ".$arg." >./tmp/tmp".$uid." &";

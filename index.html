@@ -260,6 +260,11 @@ $(document).ready(function() {
                 send("JOIN "+v.substring(3));
             } else if(v.substring(0,6) == '/mode ') {
                 send("MODE "+v.substring(6));
+            } else if(v.substring(0,6) == '/part ') {
+                send("PART "+v.substring(6));
+            } else if(v.substring(0,5) == '/quit') {
+                send("QUIT");
+                nl("*","Goodbye.");
             } else if(v.substring(0,7) == '/quote ') {
                 send(v.substring(7));
             } else alert("Unsupported operation.");
@@ -286,7 +291,7 @@ $(document).ready(function() {
 Server: <input id="server" value="irc.bouncerstation.com" /><br />
 Port: <input id="port" value=6667 /><br />
 Nick: <input id="nick" value="wirc" /><br />
-Realname: <input id="realname" value="AngelaWilliam" /><br />
+Realname: <input id="realname" value="Angela William" /><br />
 Channel: <input id="chan" value="#private" /><br />
 <button onclick="connectsmt()">Connect</button>
 </div>
