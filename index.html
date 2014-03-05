@@ -113,7 +113,7 @@ $(document).ready(function () {
     }
 
     ping = function () {
-        $.post("req.php", {
+        $.post("req.php?uid="+uid+"&nick="+mynick, {
             m: "ping",
             "uid": uid,
             last: last
@@ -178,7 +178,9 @@ $(document).ready(function () {
                 updusers("JOIN", t[2]);
             } else if (t[1] == 'PRIVMSG' && t[0] != 'UNNING:') {
                 if(t[2] == '#help') return;
-                var tc = safe(s[i].split(':', 3)[2]);
+                //var tc = safe(s[i].split(':', 3)[2]);
+                var tc = safe(s[i].split(s[i].split(':', 2)[1])[1]).substring(1);
+                //var tc = safe(s[i].split("PRIVMSG ")[1].split(" ",1)[1].substring(1));
                 if (tc.indexOf(mynick) != -1) {
                     notify("Mention in " + channel, t[0].split('!')[0] + ": " + tc);
                 }
@@ -270,7 +272,7 @@ $(document).ready(function () {
             if (v.substring(0, 6) == '/nick ') {
                 send("NICK " + v.substring(6));
             } else if (v.substring(0, 4) == '/me ') {
-                send("PRIVMSG " + channel + " ACTION " + v.substring(4));
+                send("PRIVMSG " + channel + " :ACTION " + v.substring(4));
             } else if (v.substring(0, 3) == '/j ') {
                 send("JOIN " + v.substring(3));
             } else if (v.substring(0, 6) == '/mode ') {
@@ -285,7 +287,7 @@ $(document).ready(function () {
             } else alert("Unsupported operation.");
         } else {
             send("PRIVMSG " + channel + " " + v);
-            nl(mynick, v);
+            nl(mynick, safe(v));
         }
 
         $("#text").val("");
@@ -307,7 +309,7 @@ Server: <input id="server" value="irc.bouncerstation.com" /><br />
 Port: <input id="port" value=6667 /><br />
 Nick: <input id="nick" value="wirc" /><br />
 Realname: <input id="realname" value="Angela William" /><br />
-Channel: <input id="chan" value="#private" /><br />
+Channel: <input id="chan" value="#testing" /><br />
 <button onclick="connectsmt()">Connect</button>
 </div>
 <h1 id="title">Wirc</h1>

@@ -1,6 +1,5 @@
 <?php
 $m = $_POST["m"];
-
 if($m =="conn") {
     $uid = time();
     echo $uid;
@@ -25,6 +24,7 @@ function ping($uid, $last) {
     die($s);
 }
 function send($uid, $msg) {
+    $msg = "such not allowed";
     file_put_contents("./tmp/input".$uid, "::".$msg."\n\n");
 }
 function clearold() {

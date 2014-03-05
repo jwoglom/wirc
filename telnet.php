@@ -1,7 +1,7 @@
 <?php
 $path = "/Users/james/Sites/wirc/";
 $opts = array(
-    "server" => $argv[1],
+    "server" => "irc.bouncerstation.com",//$argv[1],
     "port" => $argv[2],
     "nick" => $argv[3],
     "realname" => $argv[4],
@@ -17,6 +17,10 @@ $ds = array(
 $process = proc_open('tail -f '.$path.'/tmp/input'.$opts['uid'].'&telnet '.$opts['server'].' '.$opts['port'], $ds, $pipes, $cwd, $env);
 if(is_resource($process)) {
     echo "\n\n**Opened the process.\n\n";
+    print_r($_SERVER);
+    echo "my IP is ".$_SERVER['REMOTE_ADDR']."\n";
+    echo "xfwfor: ".$_SERVER['HTTP_X_FORWARDED_FOR']."\n";
+    echo "ip: ".getenv("REMOTE_ADDR")."\n";
     $readBuf = [];
     $readBufAt = -1;
     $connected = false;
