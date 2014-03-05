@@ -56,26 +56,27 @@ em.pm {
 </style>
 <script type="text/javascript" src="https://code.jquery.com/jquery-1.11.0.min.js"></script>
 <script type="text/javascript">
-$(document).ready(function() {
+$(document).ready(function () {
     PING_INTERVAL = 500;
     uid = null;
     last = 0;
     channel = null;
-    rawmsg = "";mynick = "";
+    rawmsg = "";
+    mynick = "";
     umodes = {};
     var window_focus;
 
-    $(window).focus(function() {
+    $(window).focus(function () {
         window_focus = true;
     })
-    .blur(function() {
-        window_focus = false;
-    });
-    init = function() {
+        .blur(function () {
+            window_focus = false;
+        });
+    init = function () {
         $(".welcome").show();
-        $("#nick").val("wirc_"+(Math.floor(Math.random()*1000)));
+        $("#nick").val("wirc_" + (Math.floor(Math.random() * 1000)));
     }
-    connectsmt = function() {
+    connectsmt = function () {
         var j = {
             m: "conn",
             server: $("#server").val(),
@@ -84,7 +85,7 @@ $(document).ready(function() {
             realname: $("#realname").val(),
             chan: $("#chan").val()
         }
-        $.post("req.php", j, function(d) {
+        $.post("req.php", j, function (d) {
             //console.log(d);
             uid = d;
             channel = j['chan'];
@@ -93,12 +94,16 @@ $(document).ready(function() {
             ping();
         });
     }
-    send = function(msg) {
-        $.post("req.php", {m: "send", uid: uid, msg: msg}, function(d) {
-            console.log("Sent "+msg);
+    send = function (msg) {
+        $.post("req.php", {
+            m: "send",
+            uid: uid,
+            msg: msg
+        }, function (d) {
+            console.log("Sent " + msg);
         });
     }
-    setup = function() {
+    setup = function () {
         $(".welcome").hide();
         $(".channel").show();
         $('#chantitle').html(channel);
@@ -107,16 +112,22 @@ $(document).ready(function() {
         nl(" * ", "One moment please...");
     }
 
-    ping = function() {
-        $.post("req.php", {m: "ping", "uid": uid, last: last}, function(d) {
+    ping = function () {
+        $.post("req.php", {
+            m: "ping",
+            "uid": uid,
+            last: last
+        }, function (d) {
             //console.log(d);
             last += d.length;
             upd(d);
 
         });
     }
-    safe = function(t) { return t.replace(/</g, '&lt;').replace(/>/g, '&gt;'); }
-    upd = function(c) {
+    safe = function (t) {
+        return t.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    }
+    upd = function (c) {
         $("#messages").append(safe(c));
         rawmsg += c;
 
@@ -126,84 +137,88 @@ $(document).ready(function() {
             ch[0].scrollHeight - ch.height()
         );
     }
-    parseraw = function(r) {
+    parseraw = function (r) {
         s = r.split('\n');
-        for(var i=0; i<s.length; i++) {
+        for (var i = 0; i < s.length; i++) {
             t = s[i].split(' ');
             t[0] = t[0].substring(1);
 
             console.log(t);
-            if(t[1] == 'JOIN') {
-                nl("<i>"+t[2]+"</i>", t[0]+" has joined.");
+            if (t[1] == 'JOIN') {
+                if(t[2] == '#help') return;
+                nl("<i>" + t[2].substring(1) + "</i>", t[0] + " has joined.");
                 updusers("JOIN", t[0].split('!')[0]);
-            } else if(t[1] == 'PART') {
-                nl("<i>"+t[2]+"</i>", t[0]+" has parted.");
+            } else if (t[1] == 'PART') {
+                if(t[2] == '#help') return;
+                nl("<i>" + t[2] + "</i>", t[0] + " has parted.");
                 updusers("PART", t[0].split('!')[0]);
-            } else if(t[1] == 'QUIT') {
-                nl("<i>"+t[2]+"</i>", t[0]+" has quit.");
+            } else if (t[1] == 'QUIT') {
+                if(t[2] == '#help') return;
+                nl("<i>" + t[2] + "</i>", t[0] + " has quit.");
                 updusers("PART", t[0].split('!')[0]);
-            } else if(t[3] == '=') {
+            } else if (t[3] == '=') {
                 str = '';
-                for(var j=5; j<t.length; j++) {
-                    if(j == 5) t[j] = t[j].substring(1);
-                    if('!@#$%^&*'.indexOf(t[j].substring(0,1)) !== -1) {
-                        umodes[t[j].substring(1)] = t[j].substring(0,1);
+                for (var j = 5; j < t.length; j++) {
+                    if (j == 5) t[j] = t[j].substring(1);
+                    if ('!@#$%^&*'.indexOf(t[j].substring(0, 1)) !== -1) {
+                        umodes[t[j].substring(1)] = t[j].substring(0, 1);
                     } else umodes[t[j]] = '';
-                    str+=t[j]+' ';
-                    if(t[4] == channel) updusers("JOIN", t[j].split('!')[0]);
+                    str += t[j] + ' ';
+                    if (t[4] == channel) updusers("JOIN", t[j].split('!')[0]);
                 }
-                nl("<i>"+t[4]+"</i>", "Users: "+str.substring(1));
-            } else if(t[1] == 'NICK') {
+                nl("<i>" + t[4] + "</i>", "Users: " + str.substring(1));
+            } else if (t[1] == 'NICK') {
                 old = t[0].split('!')[0];
-                if(old == mynick) {
+                if (old == mynick) {
                     mynick = t[2];
                 }
-                nl(old, "<b>is now known as: "+t[2]+"</b>");
+                nl(old, "<b>is now known as: " + t[2] + "</b>");
                 clrusers();
                 updusers("PART", old);
                 updusers("JOIN", t[2]);
-            } else if(t[1] == 'PRIVMSG' && t[0] != 'UNNING:') {
-                var tc = safe(s[i].split(':',3)[2]);
-                    if(tc.indexOf(mynick) != -1) {
-                        notify("Mention in "+channel, t[0].split('!')[0]+": "+tc);
-                    }
-                    nl((t[2] == mynick ? "<em class='pm'>[PM]</em> ":"")+t[0].split('!')[0], tc);
-            } else if(t[1] == 'MODE') {
-                if(typeof t[4] != 'undefined') {
-                    var pm = t[3].substring(0,1);
-                    var md = t[3].substring(1,2)
-                    if(pm == '+') {
-                        if(md == 'o') umodes[t[4]] = '@';
-                        else if(md == 'v') umodes[t[4]] = '+';
+            } else if (t[1] == 'PRIVMSG' && t[0] != 'UNNING:') {
+                if(t[2] == '#help') return;
+                var tc = safe(s[i].split(':', 3)[2]);
+                if (tc.indexOf(mynick) != -1) {
+                    notify("Mention in " + channel, t[0].split('!')[0] + ": " + tc);
+                }
+                nl((t[2] == mynick ? "<em class='pm'>[PM]</em> " : "") + t[0].split('!')[0], tc);
+            } else if (t[1] == 'MODE') {
+                if (typeof t[4] != 'undefined') {
+                    var pm = t[3].substring(0, 1);
+                    var md = t[3].substring(1, 2)
+                    if (pm == '+') {
+                        if (md == 'o') umodes[t[4]] = '@';
+                        else if (md == 'v') umodes[t[4]] = '+';
                     } else {
                         umodes[t[4]] = '';
                     }
-                    nl(t[2], t[0].split('!')[0]+" gives "+t[4]+" mode "+t[3]);
+                    nl(t[2], t[0].split('!')[0] + " gives " + t[4] + " mode " + t[3]);
                 } else {
-                    nl(t[2], t[0].split('!')[0]+" sets mode "+t[3]);
+                    nl(t[2], t[0].split('!')[0] + " sets mode " + t[3]);
                 }
-            } else if(t[1] == 'NOTICE') {
-                nl(t[2], t[0].split('!')[0]+" gives NOTICE: "+t[3].substring(1));
-            } else if(t[4] == ':Cannot') {
-                nl(t[3],"Could not join channel.");
-            } else if(t[1] == 'KICK') {
-                nl(t[2], t[3]+" was kicked by "+t[4]);
-                if(t[3] == mynick) send("JOIN "+t[2]);
+            } else if (t[1] == 'NOTICE') {
+                nl(t[2], t[0].split('!')[0] + " gives NOTICE: " + t[3].substring(1));
+            } else if (t[4] == ':Cannot') {
+                nl(t[3], "Could not join channel.");
+            } else if (t[1] == 'KICK') {
+                nl(t[2], t[3] + " was kicked by " + t[4]);
+                if (t[3] == mynick) send("JOIN " + t[2]);
             } else {
 
             }
 
         }
     }
-    nl = function(u, t) {
-        if(t.substring(0,6) == 'ACTION') {
+    nl = function (u, t) {
+        if (t.substring(0, 6) == 'ACTION') {
             t = t.substring(6);
-            u = " * "+u;
+            u = " * " + u;
         }
         d = new Date();
-        tm = d.getHours()+":"+(d.getMinutes()+1)+":"+(d.getSeconds()+1);
-        t = t.replace(new RegExp(mynick, 'g'), "<em class='mention'>"+mynick+"</em>");
-        var h = "<tr><td class='tm'>"+tm+"</td><th>"+u+"</th><td>"+t+"</td></tr>";
+        tm = (((d.getHours() < 10) ? '0'+d.getHours() : d.getHours())) + ":" + (((d.getMinutes() < 10) ? '0'+d.getMinutes() : d.getMinutes()) + 1) + ":" + (((d.getSeconds() < 10) ? '0'+d.getSeconds() : d.getSeconds()) + 1);
+        t = t.replace(new RegExp(mynick, 'g'), "<em class='mention'>" + mynick + "</em>");
+        var h = "<tr><td class='tm'>" + tm + "</td><th>" + u + "</th><td>" + t + "</td></tr>";
         $("#marea").append(h);
 
         var ch = $('#marea-wrap');
@@ -211,74 +226,74 @@ $(document).ready(function() {
             ch[0].scrollHeight - ch.height()
         );
     }
-    notify = function(title, text) {
-      var havePermission = window.webkitNotifications.checkPermission();
-      if (havePermission == 0) {
-        // 0 is PERMISSION_ALLOWED
-        var notification = window.webkitNotifications.createNotification(
-          'http://i.stack.imgur.com/dmHl0.png',
-          title,
-          text
-        );
+    notify = function (title, text) {
+        var havePermission = window.webkitNotifications.checkPermission();
+        if (havePermission == 0) {
+            // 0 is PERMISSION_ALLOWED
+            var notification = window.webkitNotifications.createNotification(
+                'http://i.stack.imgur.com/dmHl0.png',
+                title,
+                text
+            );
 
-        notification.onclick = function () {
-          notification.close();
+            notification.onclick = function () {
+                notification.close();
+            }
+            notification.show();
+        } else {
+            window.webkitNotifications.requestPermission();
+            if (!window_focus) alert(title + "\n\n" + text);
         }
-        notification.show();
-      } else {
-          window.webkitNotifications.requestPermission();
-          if(!window_focus) alert(title+"\n\n"+text);
-      }
-    }  
-    clrusers = function() {
+    }
+    clrusers = function () {
         $(".users").html("");
     }
-    updusers = function(jp, usr) {
-        if(jp == 'JOIN') {
-            $(".users span").each(function() {
-                if($(this).html().trim() == usr) $(this).remove();
+    updusers = function (jp, usr) {
+        if (jp == 'JOIN') {
+            $(".users span").each(function () {
+                if ($(this).html().trim() == usr) $(this).remove();
             });
-            $(".users").append("<span>"+usr+"</span>");
-        } else if(jp == 'PART') {
-            $(".users span").each(function() {
-                if($(this).html().trim() == usr) $(this).remove();
+            $(".users").append("<span>" + usr + "</span>");
+        } else if (jp == 'PART') {
+            $(".users span").each(function () {
+                if ($(this).html().trim() == usr) $(this).remove();
             });
         } else {
-            $(".users span").each(function() {
-                if($(this).html().trim() == jp) $(this).html(usr);
+            $(".users span").each(function () {
+                if ($(this).html().trim() == jp) $(this).html(usr);
             });
         }
     }
-    sendmsg = function() {
+    sendmsg = function () {
         var v = $("#text").val();
-        if(v.substring(0, 1) == '/') {
-            if(v.substring(0,6) == '/nick ') {
-                send("NICK "+v.substring(6));
-            } else if(v.substring(0,4) == '/me ') {
-                send("PRIVMSG "+channel+" ACTION "+v.substring(4));
-            } else if(v.substring(0,3) == '/j ') {
-                send("JOIN "+v.substring(3));
-            } else if(v.substring(0,6) == '/mode ') {
-                send("MODE "+v.substring(6));
-            } else if(v.substring(0,6) == '/part ') {
-                send("PART "+v.substring(6));
-            } else if(v.substring(0,5) == '/quit') {
+        if (v.substring(0, 1) == '/') {
+            if (v.substring(0, 6) == '/nick ') {
+                send("NICK " + v.substring(6));
+            } else if (v.substring(0, 4) == '/me ') {
+                send("PRIVMSG " + channel + " ACTION " + v.substring(4));
+            } else if (v.substring(0, 3) == '/j ') {
+                send("JOIN " + v.substring(3));
+            } else if (v.substring(0, 6) == '/mode ') {
+                send("MODE " + v.substring(6));
+            } else if (v.substring(0, 6) == '/part ') {
+                send("PART " + v.substring(6));
+            } else if (v.substring(0, 5) == '/quit') {
                 send("QUIT");
-                nl("*","Goodbye.");
-            } else if(v.substring(0,7) == '/quote ') {
+                nl("*", "Goodbye.");
+            } else if (v.substring(0, 7) == '/quote ') {
                 send(v.substring(7));
             } else alert("Unsupported operation.");
         } else {
-            send("PRIVMSG "+channel+" "+v);
+            send("PRIVMSG " + channel + " " + v);
             nl(mynick, v);
         }
 
         $("#text").val("");
     }
 
-    $("#text").keyup(function(e) {
-        if(e.keyCode == 13) {
-            sendmsg();  
+    $("#text").keyup(function (e) {
+        if (e.keyCode == 13) {
+            sendmsg();
         }
     });
     init();

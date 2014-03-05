@@ -10,6 +10,7 @@ if($m =="conn") {
     $cmd = "php ./telnet.php ".$arg." >./tmp/tmp".$uid." &";
     $exc = shell_exec($cmd);
     echo $exc;
+    clearold();
     die();
 } else if($m == "ping") {
     ping($_POST['uid'], $_POST['last']);
